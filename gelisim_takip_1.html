@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gelişim Merkezi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --bg2:#111118; --bg3:#1a1a24; --bg4:#22222f;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.14);
+  --text:#f0f0f8; --muted:#888899; --dim:#444455;
+  --purple:#a78bfa; --purple2:#7c3aed; --purple3:rgba(167,139,250,0.12);
+  --teal:#2dd4bf; --teal2:#0d9488; --teal3:rgba(45,212,191,0.12);
+  --amber:#fbbf24; --amber3:rgba(251,191,36,0.12);
+  --coral:#fb7185; --coral3:rgba(251,113,133,0.12);
+  --green:#4ade80; --blue:#60a5fa; --blue3:rgba(96,165,250,0.12);
+  --font:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  --radius:10px; --radius2:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* LAYOUT */
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:0}
+.logo{padding:0 18px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.logo-mark{font-size:10px;font-family:var(--mono);color:var(--teal);letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
+.logo-name{font-size:15px;font-weight:700;color:var(--text)}
+.nav-sec{padding:0 10px;margin-bottom:2px}
+.nav-lbl{font-size:9px;font-family:var(--mono);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;padding:8px 8px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--radius2);cursor:pointer;font-size:13px;color:var(--muted);transition:all .15s;margin-bottom:1px;user-select:none}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--purple3);color:var(--purple)}
+.nav-icon{font-size:14px;width:16px;text-align:center;flex-shrink:0}
+.sidebar-foot{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border)}
+.streak-pill{background:var(--amber3);border:1px solid rgba(251,191,36,.2);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--amber);font-family:var(--mono);text-align:center;cursor:default}
+
+/* MAIN */
+.main{padding:28px 32px;overflow-y:auto;max-height:100vh}
+.page{display:none}
+.page.active{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* HEADERS */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap}
+.pt{font-size:22px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ps{font-size:13px;color:var(--muted)}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card+.card{margin-top:14px}
+.ct{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.mb{margin-bottom:16px}
+
+/* STAT CARDS */
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.sc.p::before{background:var(--purple)}.sc.t::before{background:var(--teal)}.sc.a::before{background:var(--amber)}.sc.c::before{background:var(--coral)}.sc.b::before{background:var(--blue)}
+.sl{font-size:11px;color:var(--muted);margin-bottom:6px}
+.sv{font-size:26px;font-weight:700;font-family:var(--mono)}
+.sc.p .sv{color:var(--purple)}.sc.t .sv{color:var(--teal)}.sc.a .sv{color:var(--amber)}.sc.c .sv{color:var(--coral)}.sc.b .sv{color:var(--blue)}
+.ss{font-size:11px;color:var(--dim);margin-top:3px}
+
+/* PROGRESS */
+.pi{margin-bottom:12px}
+.ph2{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.pn{font-size:13px;color:var(--text)}
+.pp{font-size:11px;font-family:var(--mono);color:var(--muted)}
+.pt2{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.pf{height:100%;border-radius:2px;transition:width 1.2s ease}
+
+/* TASKS */
+.ti{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
+.ti:last-child{border-bottom:none}
+.ti:hover{opacity:.85}
+.tc{width:15px;height:15px;border-radius:4px;border:1px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:9px;font-weight:700;color:transparent}
+.ti.done .tc{background:var(--teal);border-color:var(--teal);color:#000}
+.ti.done .tt{text-decoration:line-through;color:var(--dim)}
+.tcont{flex:1;min-width:0}
+.tt{font-size:13px;color:var(--text);line-height:1.4}
+.tm{font-size:11px;color:var(--dim);margin-top:2px}
+
+/* TAGS */
+.tag{display:inline-block;font-size:10px;font-family:var(--mono);padding:1px 6px;border-radius:4px;margin-left:5px;vertical-align:middle}
+.tag-u{background:var(--purple3);color:var(--purple)}
+.tag-a{background:var(--teal3);color:var(--teal)}
+.tag-s{background:var(--amber3);color:var(--amber)}
+.tag-c{background:var(--coral3);color:var(--coral)}
+.tag-w{background:var(--blue3);color:var(--blue)}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:var(--radius2);border:none;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-p{background:var(--purple2);color:#fff}.btn-p:hover{background:var(--purple)}
+.btn-g{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}.btn-g:hover{color:var(--text);border-color:var(--border2)}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-icon{padding:6px 10px;font-size:14px;border-radius:var(--radius2);background:var(--bg3);border:1px solid var(--border);cursor:pointer;color:var(--muted);transition:all .15s}
+.btn-icon:hover{color:var(--text);border-color:var(--border2)}
+
+/* ALERTS */
+.alert{padding:10px 14px;border-radius:var(--radius2);font-size:13px;margin-bottom:14px;border-left:2px solid;line-height:1.5}
+.al-a{background:rgba(251,191,36,.07);border-color:var(--amber);color:var(--amber)}
+.al-t{background:rgba(45,212,191,.07);border-color:var(--teal);color:var(--teal)}
+.al-c{background:rgba(251,113,133,.07);border-color:var(--coral);color:var(--coral)}
+
+/* SCROLL */
+.sy{max-height:320px;overflow-y:auto;padding-right:4px}
+
+/* EMPTY */
+.empty{text-align:center;padding:28px;color:var(--dim);font-size:13px}
+
+/* ===== CALENDAR ===== */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-nav-title{font-size:15px;font-weight:600;color:var(--text)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dname{font-size:10px;font-family:var(--mono);color:var(--dim);text-align:center;padding:4px 0;text-transform:uppercase}
+.cal-day{min-height:60px;padding:5px;border-radius:var(--radius2);border:1px solid transparent;cursor:pointer;transition:all .15s;position:relative}
+.cal-day:hover{border-color:var(--border2);background:var(--bg3)}
+.cal-day.other-month{opacity:.25;pointer-events:none}
+.cal-day.today{border-color:var(--purple);background:var(--purple3)}
+.cal-day.selected{border-color:var(--teal);background:var(--teal3)}
+.cal-day.has-tasks::after{content:'';position:absolute;bottom:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--purple)}
+.cal-day.has-log::after{background:var(--teal)}
+.cal-day.has-tasks.has-log::after{background:linear-gradient(135deg,var(--purple) 50%,var(--teal) 50%)}
+.cal-dn{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px}
+.cal-dot-row{display:flex;gap:2px;flex-wrap:wrap}
+.cal-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+
+/* DAY DETAIL PANEL */
+.day-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.day-panel-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+/* SCHEDULE BUILDER */
+.sched-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.sched-row:last-child{border-bottom:none}
+.sched-time{font-size:11px;font-family:var(--mono);color:var(--muted);min-width:85px;padding-top:6px}
+.sched-block{flex:1;background:var(--bg3);border-radius:var(--radius2);border-left:3px solid;padding:8px 11px}
+.sched-title{font-size:13px;font-weight:500;color:var(--text)}
+.sched-detail{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
+
+/* ADD TASK INLINE */
+.add-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.inp{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:8px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .15s}
+.inp:focus{border-color:var(--purple)}
+.inp-full{width:100%}
+
+/* POST-IT NOTES */
+.postit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.postit{border-radius:var(--radius);padding:14px;position:relative;cursor:pointer;transition:transform .15s;min-height:120px}
+.postit:hover{transform:rotate(0deg) scale(1.02)}
+.postit.y{background:#2a2700;border:1px solid #544d00}
+.postit.p{background:#1e1526;border:1px solid #3d2860}
+.postit.t{background:#051e1b;border:1px solid #0d3d38}
+.postit.r{background:#200f13;border:1px solid #4a1525}
+.postit-text{font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word;min-height:60px;outline:none}
+.postit-del{position:absolute;top:8px;right:8px;font-size:12px;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .15s}
+.postit:hover .postit-del{opacity:1}
+.postit-add-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.color-pick{display:flex;gap:6px;align-items:center}
+.cp-dot{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.cp-dot.sel{border-color:var(--text)}
+.cp-y{background:#a89200}.cp-p{background:#7c3aed}.cp-t{background:#0d9488}.cp-r{background:#be185d}
+
+/* TOPIC ACCORDION */
+.topic-acc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.topic-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;transition:background .15s;user-select:none}
+.topic-head:hover{background:var(--bg3)}
+.topic-head-left{display:flex;align-items:center;gap:12px}
+.topic-icon2{font-size:18px}
+.topic-info{display:flex;flex-direction:column;gap:2px}
+.topic-name2{font-size:14px;font-weight:600;color:var(--text)}
+.topic-meta{font-size:11px;color:var(--muted)}
+.topic-arrow{font-size:12px;color:var(--dim);transition:transform .25s}
+.topic-acc.open .topic-arrow{transform:rotate(180deg)}
+.topic-bar2{width:80px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.topic-fill2{height:100%;border-radius:2px;transition:width 1s}
+.topic-body{display:none;border-top:1px solid var(--border);background:var(--bg3)}
+.topic-acc.open .topic-body{display:block}
+.topic-section{padding:14px 16px;border-bottom:1px solid var(--border)}
+.topic-section:last-child{border-bottom:none}
+.topic-sec-title{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.topic-note{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:10px 12px;color:var(--text);font-family:var(--mono);font-size:12px;line-height:1.8;resize:vertical;outline:none;min-height:80px;transition:border .15s}
+.topic-note:focus{border-color:var(--purple)}
+.res-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.res-row:last-child{border-bottom:none}
+.res-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.res-info{flex:1;min-width:0}
+.res-name{font-size:13px;color:var(--text)}
+.res-sub{font-size:11px;color:var(--muted)}
+.res-badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:4px;flex-shrink:0}
+.prog-mini{display:flex;align-items:center;gap:8px}
+.prog-mini input[type=range]{flex:1;accent-color:var(--purple)}
+
+/* LOG */
+.log-form .log-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.log-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.log-entry:last-child{border-bottom:none}
+.log-date{font-size:11px;font-family:var(--mono);color:var(--dim);min-width:75px}
+.log-cont{flex:1}
+.log-title{font-size:13px;color:var(--text);margin-bottom:2px}
+.log-note{font-size:12px;color:var(--muted);line-height:1.5}
+.log-del{font-size:12px;color:var(--dim);cursor:pointer;padding:2px 6px;border-radius:4px;transition:all .15s;flex-shrink:0}
+.log-del:hover{color:var(--coral);background:var(--coral3)}
+
+/* CHART */
+.chart-wrap{height:90px;display:flex;align-items:flex-end;gap:5px;padding:4px 0}
+.cbar{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.cb{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .8s ease;cursor:pointer}
+.cb:hover{opacity:.8}
+.clbl{font-size:9px;font-family:var(--mono);color:var(--dim)}
+
+/* WEEK CALENDAR VIEW */
+.week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.week-title{font-size:14px;font-weight:600;color:var(--text)}
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wday{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:10px 8px;min-height:140px;cursor:pointer;transition:all .15s}
+.wday:hover{border-color:var(--border2)}
+.wday.wtoday{border-color:var(--purple);background:var(--purple3)}
+.wday.wsel{border-color:var(--teal);background:var(--teal3)}
+.wdname{font-size:10px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.wdnum{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.wday.wtoday .wdname,.wday.wtoday .wdnum{color:var(--purple)}
+.wdtask{font-size:11px;color:var(--muted);padding:3px 6px;background:var(--bg2);border-radius:4px;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:24px;max-width:540px;width:100%;max-height:85vh;overflow-y:auto;animation:fadeUp .2s ease}
+.modal-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{font-size:18px;cursor:pointer;color:var(--muted);transition:color .15s}
+.modal-close:hover{color:var(--text)}
+
+/* NOTES PAGE */
+.note-area{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;color:var(--text);font-family:var(--mono);font-size:12px;line-height:1.8;resize:vertical;outline:none;min-height:180px;transition:border .15s}
+.note-area:focus{border-color:var(--purple)}
+
+/* RESOURCE ROW */
+.res-add-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+/* SEPARATOR */
+.sep{height:1px;background:var(--border);margin:16px 0}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.bd-p{background:var(--purple3);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.bd-t{background:var(--teal3);color:var(--teal);border:1px solid rgba(45,212,191,.2)}
+.bd-a{background:var(--amber3);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">gelişim · v2</div>
+    <div class="logo-name">Merkez</div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Ana</div>
+    <div class="nav-item active" onclick="go('dashboard',this)"><span class="nav-icon">◈</span>Dashboard</div>
+    <div class="nav-item" onclick="go('takvim',this)"><span class="nav-icon">◷</span>Takvim & Günler</div>
+    <div class="nav-item" onclick="go('haftalik',this)"><span class="nav-icon">▦</span>Haftalık Görünüm</div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Alan</div>
+    <div class="nav-item" onclick="go('universite',this)"><span class="nav-icon">◎</span>Üniversite</div>
+    <div class="nav-item" onclick="go('yazilim',this)"><span class="nav-icon">⟨⟩</span>Yazılım & AI</div>
+    <div class="nav-item" onclick="go('satis',this)"><span class="nav-icon">◈</span>Satış & Pazarlama</div>
+    <div class="nav-item" onclick="go('icerik',this)"><span class="nav-icon">▷</span>İçerik & Sosyal</div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Takip</div>
+    <div class="nav-item" onclick="go('log',this)"><span class="nav-icon">✦</span>Günlük Log</div>
+    <div class="nav-item" onclick="go('notlar',this)"><span class="nav-icon">◻</span>Notlar & Post-it</div>
+    <div class="nav-item" onclick="go('analiz',this)"><span class="nav-icon">⊞</span>Analiz</div>
+    <div class="nav-item" onclick="go('kaynaklar',this)"><span class="nav-icon">≡</span>Kaynaklar</div>
+  </div>
+  <div class="sidebar-foot">
+    <div class="streak-pill" id="streak-disp">🔥 0 günlük seri</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page active">
+  <div class="ph">
+    <div><div class="pt">Merhaba 👋</div><div class="ps" id="date-disp"></div></div>
+    <button class="btn btn-p btn-sm" onclick="go('takvim',null);openToday()">Bugünü Planla</button>
+  </div>
+  <div class="alert al-a" id="dash-alert">⚡ Hedef: Haftada 15 randevu · 3 içerik · 2 otomasyon kurulumu. Bugün nereden başlıyorsun?</div>
+  <div class="g4">
+    <div class="sc p"><div class="sl">Tamamlanan görev</div><div class="sv" id="s-done">0</div><div class="ss">bugün</div></div>
+    <div class="sc t"><div class="sl">Log dakikası</div><div class="sv" id="s-min">0</div><div class="ss">bu hafta</div></div>
+    <div class="sc a"><div class="sl">Log girişi</div><div class="sv" id="s-log">0</div><div class="ss">toplam</div></div>
+    <div class="sc c"><div class="sl">Aktif streak</div><div class="sv" id="s-streak">0</div><div class="ss">gün</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Alan İlerleme</div>
+      <div id="prog-bars"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Bugünün Görevleri <button class="btn btn-g btn-sm" onclick="go('takvim',null);openToday()">Düzenle</button></div>
+      <div id="dash-tasks" class="sy"><div class="empty">Takvimden bugün için görev ekle</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Bu Hafta Aktivite</div>
+      <div class="chart-wrap" id="week-chart"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Son Loglar</div>
+      <div id="recent-logs" class="sy"><div class="empty">Henüz log yok</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Hızlı Post-it <button class="btn btn-g btn-sm" onclick="go('notlar',null)">Tüm Notlar</button></div>
+    <div id="dash-postits" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px"></div>
+  </div>
+</div>
+
+<!-- TAKVİM & GÜNLER -->
+<div id="takvim" class="page">
+  <div class="ph">
+    <div><div class="pt">Takvim & Günler</div><div class="ps">Her güne özel program oluştur, geçmişi gör</div></div>
+  </div>
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card mb">
+        <div class="cal-nav">
+          <button class="btn-icon" onclick="calNav(-1)">‹</button>
+          <div class="cal-nav-title" id="cal-title"></div>
+          <button class="btn-icon" onclick="calNav(1)">›</button>
+        </div>
+        <div class="cal-grid" id="cal-head"></div>
+        <div class="cal-grid" id="cal-body" style="margin-top:4px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple)"></div>Görev var</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal)"></div>Log yazıldı</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber)"></div>İkisi de</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="day-panel" class="day-panel">
+        <div class="day-panel-title">
+          <span id="dp-title">Bir gün seç</span>
+        </div>
+        <div id="dp-content">
+          <div class="empty">Soldaki takvimden bir güne tıkla</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HAFTALIK GÖRÜNÜM -->
+<div id="haftalik" class="page">
+  <div class="ph">
+    <div><div class="pt">Haftalık Görünüm</div><div class="ps">Haftayı planla, geçmişe bak</div></div>
+  </div>
+  <div class="card mb">
+    <div class="week-nav">
+      <button class="btn-icon" onclick="weekNav(-1)">‹</button>
+      <div class="week-title" id="week-range-title"></div>
+      <button class="btn-icon" onclick="weekNav(1)">›</button>
+    </div>
+    <div class="wgrid" id="wgrid"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Seçili Gün Detayı</div>
+    <div id="week-day-detail"><div class="empty">Yukarıdan bir güne tıkla</div></div>
+  </div>
+</div>
+
+<!-- ÜNİVERSİTE -->
+<div id="universite" class="page">
+  <div class="ph"><div><div class="pt">Üniversite</div><div class="ps">Önce anlama, sonra uygulama</div></div></div>
+  <div class="alert al-a">⚠️ Final önceliği: Veri Tabanı → İleri Programlama → Visual Basic</div>
+  <div id="uni-topics"></div>
+</div>
+
+<!-- YAZILIM & AI -->
+<div id="yazilim" class="page">
+  <div class="ph"><div><div class="pt">Yazılım & AI</div><div class="ps">Sırayla git, her şeye aynı anda girme</div></div></div>
+  <div class="alert al-t">✦ Sıra: n8n → Python → API → AI entegrasyonu → Mini proje</div>
+  <div id="yaz-topics"></div>
+</div>
+
+<!-- SATIŞ -->
+<div id="satis" class="page">
+  <div class="ph"><div><div class="pt">Satış & Pazarlama</div><div class="ps">Teknik bilgi + iletişim = kazanan kombinasyon</div></div></div>
+  <div id="satis-topics"></div>
+</div>
+
+<!-- İÇERİK -->
+<div id="icerik" class="page">
+  <div class="ph"><div><div class="pt">İçerik & Sosyal</div><div class="ps">Otantik ol. Mükemmel değil, yayında.</div></div></div>
+  <div id="icerik-topics"></div>
+</div>
+
+<!-- LOG -->
+<div id="log" class="page">
+  <div class="ph"><div><div class="pt">Günlük Log</div><div class="ps">Her gün 1 giriş. Birikim güç.</div></div></div>
+  <div class="card mb">
+    <div class="ct">Yeni Giriş</div>
+    <div class="log-form">
+      <div class="log-row">
+        <input class="inp" id="l-baslik" placeholder="Ne yaptın? (örn: SQL JOIN konusunu çalıştım)" style="flex:2;min-width:200px">
+        <select class="inp" id="l-alan">
+          <option value="uni">🎓 Üniversite</option>
+          <option value="ai">🤖 Yazılım/AI</option>
+          <option value="satis">📈 Satış</option>
+          <option value="sosyal">📱 İçerik</option>
+          <option value="diger">◈ Diğer</option>
+        </select>
+        <input class="inp" id="l-sure" type="number" placeholder="Süre (dk)" style="max-width:100px">
+      </div>
+      <div class="log-row">
+        <textarea class="inp" id="l-not" placeholder="Notlar: Ne öğrendim? Nerede takıldım? Yarın ne yapacağım?" style="width:100%;min-height:60px;resize:vertical"></textarea>
+      </div>
+      <div class="log-row">
+        <select class="inp" id="l-mood">
+          <option value="5">🔥 Çok iyi gün</option>
+          <option value="4">✦ İyi gün</option>
+          <option value="3" selected>◈ Normal</option>
+          <option value="2">◻ Zor gündü</option>
+          <option value="1">◎ Motivasyon sıfır</option>
+        </select>
+        <button class="btn btn-p" onclick="addLog()">Kaydet</button>
+        <button class="btn btn-g" onclick="clearLog()">Temizle</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Geçmiş Loglar <span id="log-count" style="color:var(--dim)"></span></div>
+    <div class="sy" id="log-list"><div class="empty">Henüz log yok</div></div>
+  </div>
+</div>
+
+<!-- NOTLAR & POST-IT -->
+<div id="notlar" class="page">
+  <div class="ph"><div><div class="pt">Notlar & Post-it</div><div class="ps">Hızlı not, ders notu, hatırlatıcı</div></div></div>
+  <div class="card mb">
+    <div class="ct">Post-it Notlar</div>
+    <div class="postit-add-row">
+      <input class="inp" id="pi-text" placeholder="Post-it yaz..." style="flex:1;min-width:180px">
+      <div class="color-pick">
+        <div class="cp-dot cp-y sel" onclick="selColor('y',this)" title="Sarı"></div>
+        <div class="cp-dot cp-p" onclick="selColor('p',this)" title="Mor"></div>
+        <div class="cp-dot cp-t" onclick="selColor('t',this)" title="Teal"></div>
+        <div class="cp-dot cp-r" onclick="selColor('r',this)" title="Kırmızı"></div>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="addPostit()">Ekle</button>
+    </div>
+    <div class="postit-grid" id="postit-grid"></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">SQL / Veri Tabanı Notları</div>
+      <textarea class="note-area" id="n-sql" placeholder="SELECT * FROM tablo WHERE koşul&#10;JOIN notları..."></textarea>
+    </div>
+    <div class="card">
+      <div class="ct">OOP / İleri Programlama</div>
+      <textarea class="note-area" id="n-oop" placeholder="Sınıf = şablon&#10;Nesne = örnek..."></textarea>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">n8n / Otomasyon</div>
+      <textarea class="note-area" id="n-n8n" placeholder="Workflow adımları&#10;HTTP Request node..."></textarea>
+    </div>
+    <div class="card">
+      <div class="ct">Genel Notlar</div>
+      <textarea class="note-area" id="n-genel" placeholder="Aklına gelen her şeyi buraya..."></textarea>
+    </div>
+  </div>
+  <div style="text-align:right;margin-top:4px">
+    <button class="btn btn-p btn-sm" onclick="saveNotes()">Kaydet</button>
+    <span id="note-msg" style="font-size:12px;color:var(--teal);margin-left:10px;opacity:0;transition:opacity .3s"></span>
+  </div>
+</div>
+
+<!-- ANALİZ -->
+<div id="analiz" class="page">
+  <div class="ph"><div><div class="pt">Analiz</div><div class="ps">Ne kadar ilerliyorsun?</div></div></div>
+  <div class="g4">
+    <div class="sc p"><div class="sl">Toplam log</div><div class="sv" id="an-log">0</div><div class="ss">giriş</div></div>
+    <div class="sc t"><div class="sl">Toplam süre</div><div class="sv" id="an-sure">0</div><div class="ss">dakika</div></div>
+    <div class="sc a"><div class="sl">Ortalama mood</div><div class="sv" id="an-mood">-</div><div class="ss">/ 5</div></div>
+    <div class="sc c"><div class="sl">En aktif alan</div><div class="sv" id="an-alan" style="font-size:16px">-</div><div class="ss"></div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Alana Göre Süre (dk)</div>
+      <div id="alan-chart" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Haftalık Aktivite</div>
+      <div class="chart-wrap" id="analiz-chart"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Mood Geçmişi (son 14 log)</div>
+    <div id="mood-hist" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"></div>
+  </div>
+</div>
+
+<!-- KAYNAKLAR -->
+<div id="kaynaklar" class="page">
+  <div class="ph"><div><div class="pt">Kaynaklar</div><div class="ps">Sırayla öğren, hepsine aynı anda girme</div></div></div>
+  <div id="kaynak-list"></div>
+</div>
+
+</main>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title"><span id="modal-title">-</span><span class="modal-close" onclick="closeModal()">✕</span></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const S = {
+  logs: load('logs',[]),
+  streak: load('streak',0),
+  lastDate: load('lastDate',''),
+  weekMins: load('weekMins',[0,0,0,0,0,0,0]),
+  notes: load('notes',{}),
+  postits: load('postits',[]),
+  dayData: load('dayData',{}),      // {dateKey: {tasks:[],schedule:[],note:''}}
+  topicNotes: load('topicNotes',{}),// {topicId: {notes:'',prog:0,resources:[]}}
+};
+
+function load(k,def){try{const v=localStorage.getItem('gm-'+k);return v?JSON.parse(v):def;}catch{return def;}}
+function save(k,v){localStorage.setItem('gm-'+k,JSON.stringify(v));}
+function saveAll(){save('logs',S.logs);save('streak',S.streak);save('lastDate',S.lastDate);save('weekMins',S.weekMins);save('notes',S.notes);save('postits',S.postits);save('dayData',S.dayData);save('topicNotes',S.topicNotes);}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function go(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='analiz') renderAnaliz();
+  if(id==='dashboard') renderDashboard();
+}
+
+// ============================================================
+// DATES
+// ============================================================
+const MONTHS=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const DAYS_TR=['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'];
+const DAYS_FULL=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+function dateKey(d){return d.toISOString().split('T')[0];}
+function today(){return new Date();}
+function fmtDate(d){return `${DAYS_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;}
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+let calYear=today().getFullYear(), calMonth=today().getMonth();
+let selDate=today();
+
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+
+function renderCal(){
+  document.getElementById('cal-title').textContent=`${MONTHS[calMonth]} ${calYear}`;
+  const head=document.getElementById('cal-head');
+  head.innerHTML=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'].map(d=>`<div class="cal-dname">${d}</div>`).join('');
+  const body=document.getElementById('cal-body');
+  const first=new Date(calYear,calMonth,1);
+  let startDow=(first.getDay()+6)%7;
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  let html='';
+  for(let i=0;i<startDow;i++){
+    const prev=new Date(calYear,calMonth,1-startDow+i);
+    html+=`<div class="cal-day other-month"><div class="cal-dn">${prev.getDate()}</div></div>`;
+  }
+  const todayKey=dateKey(today());
+  const selKey=dateKey(selDate);
+  for(let d=1;d<=daysInMonth;d++){
+    const dd=new Date(calYear,calMonth,d);
+    const k=dateKey(dd);
+    const data=S.dayData[k]||{};
+    const hasT=(data.tasks&&data.tasks.length>0);
+    const hasL=S.logs.some(l=>l.dateKey===k);
+    let cls='cal-day';
+    if(k===todayKey) cls+=' today';
+    if(k===selKey) cls+=' selected';
+    if(hasT&&hasL) cls+='';
+    const dots=(hasT?`<div class="cal-dot" style="background:var(--purple)"></div>`:'')+(hasL?`<div class="cal-dot" style="background:var(--teal)"></div>`:'');
+    html+=`<div class="${cls}${hasT?' has-tasks':''}${hasL?' has-log':''}" onclick="selectDay('${k}')">
+      <div class="cal-dn">${d}</div>
+      <div class="cal-dot-row">${dots}</div>
+    </div>`;
+  }
+  body.innerHTML=html;
+}
+
+function selectDay(key){
+  selDate=new Date(key);
+  renderCal();
+  renderDayPanel(key);
+}
+
+function openToday(){selectDay(dateKey(today()));}
+
+function renderDayPanel(key){
+  const d=new Date(key);
+  document.getElementById('dp-title').textContent=fmtDate(d);
+  const data=S.dayData[key]||{tasks:[],schedule:[],note:''};
+  const tasks=data.tasks||[];
+  const note=data.note||'';
+
+  const sched=data.schedule||defaultSchedule();
+
+  let html=`
+    <div class="ct" style="margin-bottom:8px">Program / Zaman Bloğu <button class="btn btn-g btn-sm" onclick="addSchedBlock('${key}')">+ Blok Ekle</button></div>
+    <div id="sched-list-${key}" style="margin-bottom:14px">`;
+  sched.forEach((b,i)=>{
+    html+=`<div class="sched-row">
+      <div class="sched-time">${b.time||''}</div>
+      <div class="sched-block" style="border-color:${b.color||'var(--purple)'}">
+        <div class="sched-title">${b.title||''}</div>
+        ${b.detail?`<div class="sched-detail">${b.detail}</div>`:''}
+      </div>
+      <button class="btn-icon btn-sm" onclick="removeSchedBlock('${key}',${i})" style="font-size:11px;padding:4px 7px">✕</button>
+    </div>`;
+  });
+  html+=`</div>
+    <div class="sep"></div>
+    <div class="ct" style="margin-bottom:8px">Görevler <button class="btn btn-g btn-sm" onclick="addDayTask('${key}')">+ Görev Ekle</button></div>
+    <div id="task-list-${key}" style="margin-bottom:14px">`;
+  tasks.forEach((t,i)=>{
+    html+=`<div class="ti${t.done?' done':''}" onclick="toggleDayTask('${key}',${i})">
+      <div class="tc">${t.done?'✓':''}</div>
+      <div class="tcont">
+        <div class="tt">${t.text}<span class="tag tag-${t.tag||'u'}">${tagLabel(t.tag)}</span></div>
+        ${t.meta?`<div class="tm">${t.meta}</div>`:''}
+      </div>
+      <button class="btn-icon btn-sm" onclick="event.stopPropagation();removeDayTask('${key}',${i})" style="font-size:10px;padding:3px 6px">✕</button>
+    </div>`;
+  });
+  html+=`</div>
+    <div class="sep"></div>
+    <div class="ct" style="margin-bottom:8px">Gün Notu</div>
+    <textarea class="note-area" id="day-note-${key}" oninput="saveDayNote('${key}',this.value)" placeholder="Bu gün hakkında not..." style="min-height:80px">${note}</textarea>`;
+
+  document.getElementById('dp-content').innerHTML=html;
+}
+
+function defaultSchedule(){
+  return [
+    {time:'07:30–08:00',title:'Sabah rutini',detail:'3 önceliği belirle',color:'var(--dim)'},
+    {time:'08:00–10:00',title:'🎓 Öğrenme bloğu',detail:'Ders / yazılım / otomasyon',color:'var(--purple)'},
+    {time:'10:00–12:00',title:'◈ Üretim bloğu',detail:'İçerik / proje / uygulama',color:'var(--teal)'},
+    {time:'12:00–13:00',title:'Öğle molası',detail:'Telefon yok. Gerçek mola.',color:'var(--dim)'},
+    {time:'13:00–14:30',title:'📈 Satış / İş arama',detail:'Max 1.5 saat, sonra bırak',color:'var(--amber)'},
+    {time:'14:30–16:30',title:'Derin çalışma',detail:'Proje / portfolio / pratik',color:'var(--blue)'},
+    {time:'16:30–17:00',title:'🎥 Vlog + Log',detail:'60 sn çekim + günlük giriş',color:'var(--coral)'},
+  ];
+}
+
+function addSchedBlock(key){
+  openModal('Blok Ekle',`
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input class="inp inp-full" id="sb-time" placeholder="Saat (örn: 09:00–10:00)">
+      <input class="inp inp-full" id="sb-title" placeholder="Başlık">
+      <input class="inp inp-full" id="sb-detail" placeholder="Detay (opsiyonel)">
+      <select class="inp" id="sb-color">
+        <option value="var(--purple)">Mor (Öğrenme)</option>
+        <option value="var(--teal)">Teal (Üretim)</option>
+        <option value="var(--amber)">Amber (Satış)</option>
+        <option value="var(--coral)">Coral (İçerik)</option>
+        <option value="var(--blue)">Mavi (Yazılım)</option>
+        <option value="var(--dim)">Gri (Mola)</option>
+      </select>
+      <button class="btn btn-p" onclick="confirmSchedBlock('${key}')">Ekle</button>
+    </div>`);
+}
+
+function confirmSchedBlock(key){
+  const time=document.getElementById('sb-time').value.trim();
+  const title=document.getElementById('sb-title').value.trim();
+  if(!title){alert('Başlık gir!');return;}
+  const detail=document.getElementById('sb-detail').value.trim();
+  const color=document.getElementById('sb-color').value;
+  if(!S.dayData[key]) S.dayData[key]={tasks:[],schedule:[],note:''};
+  if(!S.dayData[key].schedule) S.dayData[key].schedule=defaultSchedule();
+  S.dayData[key].schedule.push({time,title,detail,color});
+  save('dayData',S.dayData);
+  closeModal();
+  renderDayPanel(key);
+}
+
+function removeSchedBlock(key,i){
+  if(!S.dayData[key]||!S.dayData[key].schedule) return;
+  S.dayData[key].schedule.splice(i,1);
+  save('dayData',S.dayData);
+  renderDayPanel(key);
+}
+
+function addDayTask(key){
+  openModal('Görev Ekle',`
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input class="inp inp-full" id="dt-text" placeholder="Görev metni">
+      <input class="inp inp-full" id="dt-meta" placeholder="Meta (süre, not — opsiyonel)">
+      <select class="inp" id="dt-tag">
+        <option value="u">🎓 Üniversite</option>
+        <option value="a">🤖 Yazılım/AI</option>
+        <option value="s">📈 Satış</option>
+        <option value="c">📱 İçerik</option>
+        <option value="w">◈ Diğer</option>
+      </select>
+      <button class="btn btn-p" onclick="confirmDayTask('${key}')">Ekle</button>
+    </div>`);
+}
+
+function confirmDayTask(key){
+  const text=document.getElementById('dt-text').value.trim();
+  if(!text){alert('Görev metni gir!');return;}
+  const meta=document.getElementById('dt-meta').value.trim();
+  const tag=document.getElementById('dt-tag').value;
+  if(!S.dayData[key]) S.dayData[key]={tasks:[],schedule:defaultSchedule(),note:''};
+  if(!S.dayData[key].tasks) S.dayData[key].tasks=[];
+  S.dayData[key].tasks.push({text,meta,tag,done:false});
+  save('dayData',S.dayData);
+  closeModal();
+  renderDayPanel(key);
+  renderCal();
+  renderDashTasks();
+}
+
+function toggleDayTask(key,i){
+  if(!S.dayData[key]||!S.dayData[key].tasks) return;
+  S.dayData[key].tasks[i].done=!S.dayData[key].tasks[i].done;
+  save('dayData',S.dayData);
+  renderDayPanel(key);
+  renderDashTasks();
+  updateStats();
+}
+
+function removeDayTask(key,i){
+  if(!S.dayData[key]||!S.dayData[key].tasks) return;
+  S.dayData[key].tasks.splice(i,1);
+  save('dayData',S.dayData);
+  renderDayPanel(key);
+  renderCal();
+  renderDashTasks();
+}
+
+function saveDayNote(key,val){
+  if(!S.dayData[key]) S.dayData[key]={tasks:[],schedule:defaultSchedule(),note:''};
+  S.dayData[key].note=val;
+  save('dayData',S.dayData);
+}
+
+function tagLabel(t){return{u:'ÜNİ',a:'AI',s:'SATIŞ',c:'İÇERİK',w:'DİĞER'}[t]||t;}
+
+// ============================================================
+// WEEKLY VIEW
+// ============================================================
+let weekOffset=0;
+
+function weekNav(dir){weekOffset+=dir;renderWeekView();}
+
+function renderWeekView(){
+  const now=today();
+  const dow=(now.getDay()+6)%7;
+  const monday=addDays(now,-dow+weekOffset*7);
+  const sunday=addDays(monday,6);
+  document.getElementById('week-range-title').textContent=`${monday.getDate()} ${MONTHS[monday.getMonth()]} — ${sunday.getDate()} ${MONTHS[sunday.getMonth()]} ${sunday.getFullYear()}`;
+  const todayKey=dateKey(now);
+  let html='';
+  for(let i=0;i<7;i++){
+    const d=addDays(monday,i);
+    const k=dateKey(d);
+    const data=S.dayData[k]||{};
+    const tasks=(data.tasks||[]).slice(0,3);
+    const isTod=k===todayKey;
+    html+=`<div class="wday${isTod?' wtoday':''}" onclick="selectWeekDay('${k}')">
+      <div class="wdname">${DAYS_TR[(d.getDay()+6)%7+1<7?(d.getDay()+6)%7:0]||DAYS_TR[(d.getDay()+6)%7]}</div>
+      <div class="wdnum">${d.getDate()}</div>
+      ${tasks.map(t=>`<div class="wdtask">${t.done?'✓ ':''} ${t.text.substring(0,22)}</div>`).join('')}
+      ${(data.tasks||[]).length>3?`<div style="font-size:10px;color:var(--dim)">+${(data.tasks||[]).length-3} daha</div>`:''}
+    </div>`;
+  }
+  document.getElementById('wgrid').innerHTML=html;
+}
+
+function selectWeekDay(key){
+  document.querySelectorAll('.wday').forEach(w=>w.classList.remove('wsel'));
+  event.currentTarget.classList.add('wsel');
+  const d=new Date(key);
+  const data=S.dayData[key]||{};
+  const tasks=data.tasks||[];
+  let html=`<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px">${fmtDate(d)}</div>`;
+  if(!tasks.length) html+=`<div class="empty" style="padding:16px">Bu gün için görev yok</div>`;
+  else tasks.forEach((t,i)=>html+=`<div class="ti${t.done?' done':''}"><div class="tc">${t.done?'✓':''}</div><div class="tcont"><div class="tt">${t.text}<span class="tag tag-${t.tag||'u'}">${tagLabel(t.tag)}</span></div></div></div>`);
+  if(data.note) html+=`<div style="margin-top:10px;font-size:12px;color:var(--muted);padding:10px;background:var(--bg3);border-radius:var(--radius2)">${data.note}</div>`;
+  html+=`<button class="btn btn-g btn-sm" style="margin-top:12px" onclick="go('takvim',null);selectDay('${key}')">Detaylı Düzenle</button>`;
+  document.getElementById('week-day-detail').innerHTML=html;
+}
+
+// ============================================================
+// TOPICS (accordion system)
+// ============================================================
+const UNI_TOPICS=[
+  {id:'vt',icon:'🗄️',name:'Veri Tabanı Programlama',meta:'SQL · Final öncelikli',color:'var(--purple)',
+   sections:[
+    {title:'Özet / Ders Notu',type:'note'},
+    {title:'Çalışma Listesi',type:'tasks',tasks:['SELECT, WHERE, ORDER BY, GROUP BY','INNER JOIN, LEFT JOIN farkı — örnek yaz','INSERT, UPDATE, DELETE komutları','PRIMARY KEY, FOREIGN KEY','VIEW ve Stored Procedure nedir?']},
+    {title:'Kaynaklar',type:'resources',res:[{name:'w3schools SQL',sub:'Hızlı referans',dot:'var(--teal)'},{name:'BTK Veri Tabanı Kursu',sub:'Ücretsiz sertifika',dot:'var(--purple)'}]},
+   ]},
+  {id:'ip',icon:'⚙️',name:'İleri Programlama',meta:'OOP · Final öncelikli',color:'var(--purple)',
+   sections:[
+    {title:'Özet / Ders Notu',type:'note'},
+    {title:'Çalışma Listesi',type:'tasks',tasks:['Sınıf (class) ve nesne (object) tanımı','Constructor (yapıcı metod)','Kalıtım (inheritance) — base/derived class','Polimorfizm — override, overload farkı','Interface ve abstract class farkı']},
+    {title:'Kaynaklar',type:'resources',res:[{name:'freeCodeCamp OOP',sub:'Ücretsiz video',dot:'var(--teal)'}]},
+   ]},
+  {id:'vb',icon:'🖥️',name:'Visual Basic / VB.NET',meta:'Form uygulamaları',color:'var(--purple)',
+   sections:[
+    {title:'Özet / Ders Notu',type:'note'},
+    {title:'Çalışma Listesi',type:'tasks',tasks:['Form, Button, TextBox, Label kontrolleri','Event handler (Click, Load olayları)','If / Select Case / For / While döngüleri','MessageBox kullanımı','Basit hesaplama uygulaması yaz']},
+   ]},
+  {id:'web1',icon:'🌐',name:'Web Tabanlı Kodlama',meta:'HTML/CSS/JS',color:'var(--purple)',
+   sections:[
+    {title:'Özet / Ders Notu',type:'note'},
+    {title:'Çalışma Listesi',type:'tasks',tasks:['HTML temel etiketler','CSS box model ve flexbox','JavaScript: değişken, fonksiyon, DOM','Form ve input elementleri','Basit proje yap: kişisel sayfa']},
+   ]},
+  {id:'itp',icon:'🔢',name:'İşlem Tabanlı Programlama',meta:'Algoritmik düşünce',color:'var(--purple)',
+   sections:[
+    {title:'Özet / Ders Notu',type:'note'},
+    {title:'Çalışma Listesi',type:'tasks',tasks:['Değişken ve veri tipleri','If/else karar yapıları','For/while döngüleri','Fonksiyon tanımlama','Dizi (array) kullanımı']},
+   ]},
+];
+
+const YAZ_TOPICS=[
+  {id:'n8n',icon:'⚡',name:'n8n Otomasyon',meta:'İlk durak — önce bunu öğren',color:'var(--teal)',
+   sections:[
+    {title:'Öğrenme Notları',type:'note'},
+    {title:'Öğrenme Adımları',type:'tasks',tasks:['n8n.io cloud hesabı aç','İlk trigger→action workflow kur','Google Sheets entegrasyonu','HTTP Request node kullan','Hata yönetimi (error handling) öğren']},
+    {title:'Kaynaklar',type:'resources',res:[{name:'n8n.io/docs',sub:'Resmi dokümantasyon',dot:'var(--teal)'},{name:'Leon van Zyl — YouTube',sub:'n8n workflow örnekleri',dot:'var(--blue)'}]},
+   ]},
+  {id:'python',icon:'🐍',name:'Python Temeli',meta:'BTK Akademi ile başla',color:'var(--teal)',
+   sections:[
+    {title:'Öğrenme Notları',type:'note'},
+    {title:'Öğrenme Adımları',type:'tasks',tasks:['Değişken, print, input','If/else ve döngüler','Fonksiyon tanımlama','Liste, sözlük (dict)','Dosya okuma/yazma','BTK Python sertifikası al']},
+   ]},
+  {id:'aiapi',icon:'🤖',name:'AI & Prompt Mühendisliği',meta:'ChatGPT / Claude API',color:'var(--teal)',
+   sections:[
+    {title:'Öğrenme Notları',type:'note'},
+    {title:'Öğrenme Adımları',type:'tasks',tasks:['Prompt yapısını anla (system/user)','ChatGPT API ile basit istek gönder','Few-shot prompting öğren','Claude API dene','n8n + AI birleştir']},
+   ]},
+  {id:'api',icon:'🔌',name:'API Temelleri',meta:'REST, JSON, HTTP',color:'var(--teal)',
+   sections:[
+    {title:'Öğrenme Notları',type:'note'},
+    {title:'Öğrenme Adımları',type:'tasks',tasks:['REST API nedir?','GET/POST/PUT/DELETE farkı','JSON formatını anla','Postman ile API test et','n8n HTTP Request ile API çağır']},
+   ]},
+  {id:'webdev',icon:'🌐',name:'HTML/CSS/JS',meta:'Web geliştirme temeli',color:'var(--teal)',
+   sections:[
+    {title:'Öğrenme Notları',type:'note'},
+    {title:'Öğrenme Adımları',type:'tasks',tasks:['HTML yapısı ve temel etiketler','CSS: flexbox, grid, renk','JavaScript: DOM, event listener','Küçük proje: kişisel sayfa','freeCodeCamp sertifikası al']},
+   ]},
+];
+
+const SATIS_TOPICS=[
+  {id:'script',icon:'📞',name:'Sekreter & Açılış Scriptleri',meta:'En kritik beceri',color:'var(--amber)',
+   sections:[
+    {title:'Kullandığın Scriptler & Notlar',type:'note'},
+    {title:'Pratik Görevler',type:'tasks',tasks:['5 scripti yüksek sesle oku ve kaydet','En zor itirazı aynaya karşı cevapla','Bu hafta 30+ arama yap','Hangi script işe yaradı? Not al','Sekreter geçme oranını hesapla']},
+   ]},
+  {id:'itiraz',icon:'🥊',name:'İtiraz Yönetimi',meta:'10 itiraz, 10 cevap',color:'var(--amber)',
+   sections:[
+    {title:'İtiraz Cevapları Notları',type:'note'},
+    {title:'Pratik',type:'tasks',tasks:['Her itirazı ezberle','Rol yapma: arkadaşınla pratik yap','Sahada karşılaştığın itirazları logla','En zor itirazı bu hafta çöz']},
+   ]},
+  {id:'spin',icon:'📚',name:'SPIN Selling',meta:'Neil Rackham',color:'var(--amber)',
+   sections:[
+    {title:'Okuma Notları',type:'note'},
+    {title:'Bölümler',type:'tasks',tasks:['Bölüm 1: Büyük satışlar neden farklı?','Bölüm 2: S — Durum soruları','Bölüm 3: P — Problem soruları','Bölüm 4: I — İmalar','Bölüm 5: N — İhtiyaç/ödüllendirme soruları']},
+   ]},
+];
+
+const ICERIK_TOPICS=[
+  {id:'linkedin',icon:'💼',name:'LinkedIn Stratejisi',meta:'B2B kişisel marka',color:'var(--coral)',
+   sections:[
+    {title:'Strateji Notları',type:'note'},
+    {title:'Görevler',type:'tasks',tasks:['LinkedIn bio: "Yangın Güvenliği + Yazılım"','Haftada 3 gönderi ritmi kur','Sektörel kişilerle bağlantı kur','İlk hikaye yazısı yayınla','Analitik takip et']},
+    {title:'İçerik Fikirleri',type:'resources',res:[{name:'Saha hikayesi',sub:'Bugün ne yaşadım formatı',dot:'var(--coral)'},{name:'Öğrenme içeriği',sub:'Bu hafta şunu öğrendim',dot:'var(--coral)'},{name:'Pazar özeti',sub:'7 günde 7 şey',dot:'var(--coral)'}]},
+   ]},
+  {id:'instagram',icon:'📸',name:'Instagram & Vlog',meta:'Günlük içerik',color:'var(--coral)',
+   sections:[
+    {title:'İçerik Notları',type:'note'},
+    {title:'Görevler',type:'tasks',tasks:['CapCut kur, ilk video düzenle','Haftada 3 reels hedefi','Günlük story: "bugün ne yaptım"','İlk 60 saniyelik saha videosu','Hashtag stratejisi oluştur']},
+   ]},
+  {id:'canva',icon:'🎨',name:'Canva & Tasarım',meta:'Görsel içerik',color:'var(--coral)',
+   sections:[
+    {title:'Tasarım Notları',type:'note'},
+    {title:'Görevler',type:'tasks',tasks:['Kişisel renk paleti belirle','Logo taslağı yap','LinkedIn kapak fotoğrafı tasarla','Haftalık infografik şablonu oluştur','Story şablonu hazırla']},
+   ]},
+  {id:'otoicerik',icon:'🤖',name:'İçerik Otomasyonu',meta:'n8n + AI ile içerik üret',color:'var(--coral)',
+   sections:[
+    {title:'Otomasyon Notları',type:'note'},
+    {title:'Hedefler',type:'tasks',tasks:['İçerik takvimini Notion/Sheets\'e taşı','n8n ile içerik hatırlatıcısı kur','AI ile içerik fikri üret (prompt yaz)','Toplu içerik üretimi: haftada 1 oturum']},
+   ]},
+];
+
+const KAYNAK_DATA=[
+  {cat:'BTK Akademi (Ücretsiz & Sertifikalı)',items:[
+    {name:'Python ile Programlamaya Giriş',sub:'~15 saat · İlk al',badge:'1. ÖNCE',bc:'var(--purple)'},
+    {name:'Yapay Zeka ve Makine Öğrenmesi',sub:'Ücretsiz sertifika',badge:'2. SONRA',bc:'var(--purple)'},
+    {name:'Veri Tabanı Yönetim Sistemleri',sub:'Üniversiteyi destekler',badge:'ÜNİ+',bc:'var(--teal)'},
+    {name:'Web Programlama (HTML/CSS/JS)',sub:'Pratik proje içerir',badge:'ÜNİ+',bc:'var(--teal)'},
+    {name:'Siber Güvenlik Temelleri',sub:'Kariyer için değerli',badge:'SONRA',bc:'var(--dim)'},
+  ]},
+  {cat:'Öğrenme Siteleri',items:[
+    {name:'n8n.io/docs',sub:'Resmi dokümantasyon',badge:'OTO',bc:'var(--teal)'},
+    {name:'freeCodeCamp.org',sub:'HTML/CSS/JS/Python — sertifikalı, ücretsiz',badge:'YAZ',bc:'var(--teal)'},
+    {name:'w3schools.com',sub:'SQL, HTML, Python — hızlı referans',badge:'REF',bc:'var(--teal)'},
+    {name:'roadmap.sh',sub:'Yazılım öğrenme yol haritaları',badge:'YOL',bc:'var(--blue)'},
+  ]},
+  {cat:'Satış',items:[
+    {name:'SPIN Selling — Neil Rackham',sub:'B2B satışın temel kitabı',badge:'KİTAP',bc:'var(--amber)'},
+    {name:'Never Split the Difference — Chris Voss',sub:'Müzakere taktikleri',badge:'KİTAP',bc:'var(--amber)'},
+    {name:'Patrick Dang — YouTube',sub:'Cold calling ve B2B satış',badge:'VİDEO',bc:'var(--blue)'},
+    {name:'The Sales Hacker Podcast',sub:'Teknik satış podcastı',badge:'PODCAST',bc:'var(--coral)'},
+  ]},
+  {cat:'İçerik & Sosyal',items:[
+    {name:'Richard van der Blom — LinkedIn',sub:'LinkedIn algoritması rehberi',badge:'LI',bc:'var(--coral)'},
+    {name:'CapCut',sub:'Mobil video kurgu',badge:'UYGULAMA',bc:'var(--coral)'},
+    {name:'Buffer / Later',sub:'İçerik zamanlama',badge:'ARAÇ',bc:'var(--coral)'},
+  ]},
+];
+
+function renderTopics(containerId, topics){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  c.innerHTML=topics.map(t=>{
+    const tn=S.topicNotes[t.id]||{notes:'',prog:0,resources:[]};
+    return `<div class="topic-acc" id="tacc-${t.id}">
+      <div class="topic-head" onclick="toggleTopic('${t.id}')">
+        <div class="topic-head-left">
+          <div class="topic-icon2">${t.icon}</div>
+          <div class="topic-info">
+            <div class="topic-name2">${t.name}</div>
+            <div class="topic-meta">${t.meta}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--dim);margin-bottom:4px;text-align:right">${tn.prog||0}%</div>
+            <div class="topic-bar2"><div class="topic-fill2" style="width:${tn.prog||0}%;background:${t.color}"></div></div>
+          </div>
+          <div class="topic-arrow">▾</div>
+        </div>
+      </div>
+      <div class="topic-body" id="tbody-${t.id}">
+        ${renderTopicBody(t)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTopicBody(t){
+  const tn=S.topicNotes[t.id]||{notes:'',prog:0,resources:[]};
+  return t.sections.map(s=>{
+    if(s.type==='note') return `<div class="topic-section">
+      <div class="topic-sec-title">${s.title}</div>
+      <textarea class="topic-note" id="tnote-${t.id}" onchange="saveTopicNote('${t.id}',this.value)" placeholder="Buraya not al...">${tn.notes||''}</textarea>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+        <span style="font-size:12px;color:var(--muted)">İlerleme:</span>
+        <input type="range" min="0" max="100" value="${tn.prog||0}" style="flex:1;accent-color:${t.color}" oninput="saveTopicProg('${t.id}',this.value);this.previousElementSibling.nextElementSibling.textContent=this.value+'%'">
+        <span style="font-size:12px;font-family:var(--mono);color:var(--muted);min-width:36px">${tn.prog||0}%</span>
+      </div>
+    </div>`;
+    if(s.type==='tasks') return `<div class="topic-section">
+      <div class="topic-sec-title">${s.title} <button class="btn btn-g btn-sm" onclick="addTopicTask('${t.id}')">+ Ekle</button></div>
+      <div id="ttasks-${t.id}">${renderTopicTasks(t.id,s.tasks)}</div>
+    </div>`;
+    if(s.type==='resources') return `<div class="topic-section">
+      <div class="topic-sec-title">${s.title}</div>
+      ${s.res.map(r=>`<div class="res-row"><div class="res-dot" style="background:${r.dot}"></div><div class="res-info"><div class="res-name">${r.name}</div><div class="res-sub">${r.sub}</div></div></div>`).join('')}
+      <div class="res-add-row">
+        <input class="inp" id="res-inp-${t.id}" placeholder="Kaynak ekle..." style="flex:1">
+        <button class="btn btn-g btn-sm" onclick="addTopicRes('${t.id}')">Ekle</button>
+      </div>
+      <div id="tres-${t.id}">${(tn.resources||[]).map(r=>`<div class="res-row"><div class="res-dot" style="background:var(--teal)"></div><div class="res-info"><div class="res-name">${r}</div></div></div>`).join('')}</div>
+    </div>`;
+    return '';
+  }).join('');
+}
+
+function renderTopicTasks(id, defaultTasks){
+  const tn=S.topicNotes[id]||{};
+  const saved=tn.tasks||{};
+  return defaultTasks.map((t,i)=>{
+    const done=saved[i]||false;
+    return `<div class="ti${done?' done':''}" onclick="toggleTopicTask('${id}',${i},this)">
+      <div class="tc">${done?'✓':''}</div>
+      <div class="tcont"><div class="tt">${t}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleTopic(id){
+  const acc=document.getElementById('tacc-'+id);
+  acc.classList.toggle('open');
+}
+
+function saveTopicNote(id,val){
+  if(!S.topicNotes[id]) S.topicNotes[id]={notes:'',prog:0,resources:[],tasks:{}};
+  S.topicNotes[id].notes=val;
+  save('topicNotes',S.topicNotes);
+}
+
+function saveTopicProg(id,val){
+  if(!S.topicNotes[id]) S.topicNotes[id]={notes:'',prog:0,resources:[],tasks:{}};
+  S.topicNotes[id].prog=parseInt(val);
+  save('topicNotes',S.topicNotes);
+  renderProgressBars();
+}
+
+function toggleTopicTask(id,i,el){
+  if(!S.topicNotes[id]) S.topicNotes[id]={notes:'',prog:0,resources:[],tasks:{}};
+  if(!S.topicNotes[id].tasks) S.topicNotes[id].tasks={};
+  S.topicNotes[id].tasks[i]=!S.topicNotes[id].tasks[i];
+  save('topicNotes',S.topicNotes);
+  const done=S.topicNotes[id].tasks[i];
+  el.classList.toggle('done',done);
+  el.querySelector('.tc').textContent=done?'✓':'';
+}
+
+function addTopicTask(id){
+  openModal('Görev Ekle',`
+    <input class="inp inp-full" id="tt-inp" placeholder="Görev metni" style="margin-bottom:10px">
+    <button class="btn btn-p" onclick="confirmTopicTask('${id}')">Ekle</button>`);
+}
+
+function confirmTopicTask(id){
+  const text=document.getElementById('tt-inp').value.trim();
+  if(!text) return;
+  if(!S.topicNotes[id]) S.topicNotes[id]={notes:'',prog:0,resources:[],tasks:{}};
+  if(!S.topicNotes[id].extraTasks) S.topicNotes[id].extraTasks=[];
+  S.topicNotes[id].extraTasks.push(text);
+  save('topicNotes',S.topicNotes);
+  closeModal();
+  const el=document.getElementById('ttasks-'+id);
+  if(el){
+    const div=document.createElement('div');
+    div.className='ti';
+    div.innerHTML=`<div class="tc"></div><div class="tcont"><div class="tt">${text}</div></div>`;
+    el.appendChild(div);
+  }
+}
+
+function addTopicRes(id){
+  const inp=document.getElementById('res-inp-'+id);
+  const val=inp.value.trim();
+  if(!val) return;
+  if(!S.topicNotes[id]) S.topicNotes[id]={notes:'',prog:0,resources:[],tasks:{}};
+  if(!S.topicNotes[id].resources) S.topicNotes[id].resources=[];
+  S.topicNotes[id].resources.push(val);
+  save('topicNotes',S.topicNotes);
+  inp.value='';
+  const el=document.getElementById('tres-'+id);
+  if(el){
+    const div=document.createElement('div');
+    div.className='res-row';
+    div.innerHTML=`<div class="res-dot" style="background:var(--teal)"></div><div class="res-info"><div class="res-name">${val}</div></div>`;
+    el.appendChild(div);
+  }
+}
+
+function renderKaynaklar(){
+  const c=document.getElementById('kaynak-list');
+  if(!c) return;
+  c.innerHTML=KAYNAK_DATA.map(cat=>`
+    <div class="card mb">
+      <div class="ct">${cat.cat}</div>
+      ${cat.items.map(item=>`<div class="res-row">
+        <div class="res-dot" style="background:${item.bc}"></div>
+        <div class="res-info"><div class="res-name">${item.name}</div><div class="res-sub">${item.sub}</div></div>
+        <div class="res-badge" style="background:${item.bc}22;color:${item.bc}">${item.badge}</div>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// ============================================================
+// LOG
+// ============================================================
+const ALAN_LABELS={uni:'🎓 Üniversite',ai:'🤖 Yazılım/AI',satis:'📈 Satış',sosyal:'📱 İçerik',diger:'◈ Diğer'};
+const MOOD_LABELS={'5':'🔥','4':'✦','3':'◈','2':'◻','1':'◎'};
+
+function addLog(){
+  const baslik=document.getElementById('l-baslik').value.trim();
+  if(!baslik){alert('Başlık gir!');return;}
+  const alan=document.getElementById('l-alan').value;
+  const sure=parseInt(document.getElementById('l-sure').value)||0;
+  const not=document.getElementById('l-not').value.trim();
+  const mood=document.getElementById('l-mood').value;
+  const now=new Date();
+  const key=dateKey(now);
+  S.logs.unshift({id:Date.now(),baslik,alan,sure,not,mood,dateKey:key,date:now.toLocaleDateString('tr-TR'),time:now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})});
+  const di=(now.getDay()+6)%7;
+  S.weekMins[di]=(S.weekMins[di]||0)+sure;
+  updateStreak(now.toDateString());
+  save('logs',S.logs);save('weekMins',S.weekMins);
+  clearLog();renderLogs();updateStats();renderWeekChart();renderCal();
+}
+
+function clearLog(){document.getElementById('l-baslik').value='';document.getElementById('l-sure').value='';document.getElementById('l-not').value='';document.getElementById('l-mood').value='3';}
+
+function renderLogs(){
+  const list=document.getElementById('log-list');
+  const cnt=document.getElementById('log-count');
+  if(cnt) cnt.textContent=S.logs.length+' giriş';
+  if(!S.logs.length){list.innerHTML='<div class="empty">Henüz log yok</div>';return;}
+  list.innerHTML=S.logs.map(l=>`<div class="log-entry">
+    <div class="log-date">${l.date}<br><span style="font-size:10px">${l.time}</span></div>
+    <div class="log-cont">
+      <div class="log-title">${MOOD_LABELS[l.mood]||''} ${l.baslik} <span style="font-size:11px;color:var(--dim)">${ALAN_LABELS[l.alan]||l.alan}${l.sure?' · '+l.sure+' dk':''}</span></div>
+      ${l.not?`<div class="log-note">${l.not}</div>`:''}
+    </div>
+    <div class="log-del" onclick="delLog(${l.id})">✕</div>
+  </div>`).join('');
+}
+
+function delLog(id){
+  if(!confirm('Logu sil?')) return;
+  S.logs=S.logs.filter(l=>l.id!==id);
+  save('logs',S.logs);renderLogs();updateStats();renderAnaliz();
+}
+
+// ============================================================
+// POST-IT
+// ============================================================
+let selColor2='y';
+function selColor(c,el){selColor2=c;document.querySelectorAll('.cp-dot').forEach(d=>d.classList.remove('sel'));el.classList.add('sel');}
+
+function addPostit(){
+  const text=document.getElementById('pi-text').value.trim();
+  if(!text) return;
+  S.postits.push({id:Date.now(),text,color:selColor2});
+  save('postits',S.postits);
+  document.getElementById('pi-text').value='';
+  renderPostits();
+}
+
+function renderPostits(){
+  const g=document.getElementById('postit-grid');
+  const db=document.getElementById('dash-postits');
+  if(!g) return;
+  if(!S.postits.length){g.innerHTML='<div class="empty" style="grid-column:1/-1">Henüz post-it yok</div>';if(db)db.innerHTML='<div style="font-size:12px;color:var(--dim)">Notlar sekmesinden ekle</div>';return;}
+  const html=S.postits.map(p=>`<div class="postit ${p.color}">
+    <div class="postit-del" onclick="delPostit(${p.id})">✕</div>
+    <div class="postit-text" contenteditable="true" onblur="editPostit(${p.id},this.textContent)">${p.text}</div>
+  </div>`).join('');
+  g.innerHTML=html;
+  if(db) db.innerHTML=S.postits.slice(0,4).map(p=>`<div class="postit ${p.color}" style="min-height:80px;max-width:150px">
+    <div style="font-size:11px;color:var(--muted);line-height:1.5">${p.text.substring(0,60)}${p.text.length>60?'...':''}</div>
+  </div>`).join('');
+}
+
+function delPostit(id){S.postits=S.postits.filter(p=>p.id!==id);save('postits',S.postits);renderPostits();}
+function editPostit(id,text){const p=S.postits.find(p=>p.id===id);if(p){p.text=text.trim();save('postits',S.postits);}}
+
+// ============================================================
+// NOTES
+// ============================================================
+function saveNotes(){
+  ['sql','oop','n8n','genel'].forEach(k=>{
+    const el=document.getElementById('n-'+k);
+    if(el) S.notes[k]=el.value;
+  });
+  save('notes',S.notes);
+  const msg=document.getElementById('note-msg');
+  msg.textContent='✓ Kaydedildi';msg.style.opacity='1';
+  setTimeout(()=>msg.style.opacity='0',2000);
+}
+function loadNotes(){['sql','oop','n8n','genel'].forEach(k=>{const el=document.getElementById('n-'+k);if(el&&S.notes[k])el.value=S.notes[k];});}
+
+// ============================================================
+// STATS & CHARTS
+// ============================================================
+function updateStats(){
+  const todayKey=dateKey(today());
+  const data=S.dayData[todayKey]||{};
+  const done=(data.tasks||[]).filter(t=>t.done).length;
+  const el=document.getElementById('s-done');if(el)el.textContent=done;
+  const total=S.weekMins.reduce((a,b)=>a+b,0);
+  const em=document.getElementById('s-min');if(em)em.textContent=total;
+  const el2=document.getElementById('s-log');if(el2)el2.textContent=S.logs.length;
+  const es=document.getElementById('s-streak');if(es)es.textContent=S.streak;
+}
+
+function renderProgressBars(){
+  const allTopics=[...UNI_TOPICS,...YAZ_TOPICS,...SATIS_TOPICS,...ICERIK_TOPICS];
+  const groups=[
+    {label:'Üniversite',ids:UNI_TOPICS.map(t=>t.id),color:'var(--purple)'},
+    {label:'Yazılım & AI',ids:YAZ_TOPICS.map(t=>t.id),color:'var(--teal)'},
+    {label:'Satış',ids:SATIS_TOPICS.map(t=>t.id),color:'var(--amber)'},
+    {label:'İçerik',ids:ICERIK_TOPICS.map(t=>t.id),color:'var(--coral)'},
+  ];
+  const c=document.getElementById('prog-bars');
+  if(!c) return;
+  c.innerHTML=groups.map(g=>{
+    const progs=g.ids.map(id=>(S.topicNotes[id]||{}).prog||0);
+    const avg=progs.length?Math.round(progs.reduce((a,b)=>a+b,0)/progs.length):0;
+    return `<div class="pi">
+      <div class="ph2"><span class="pn">${g.label}</span><span class="pp">${avg}%</span></div>
+      <div class="pt2"><div class="pf" style="width:${avg}%;background:${g.color}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderWeekChart(){
+  const days=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+  const max=Math.max(...S.weekMins,60);
+  const colors=['var(--purple)','var(--teal)','var(--amber)','var(--coral)','var(--blue)','var(--green)','var(--purple)'];
+  const el=document.getElementById('week-chart');
+  if(!el) return;
+  el.innerHTML=days.map((d,i)=>{
+    const h=Math.round((S.weekMins[i]/max)*75)+3;
+    return `<div class="cbar"><div class="cb" style="height:${h}px;background:${colors[i]}" title="${S.weekMins[i]} dk"></div><div class="clbl">${d}</div></div>`;
+  }).join('');
+}
+
+// ============================================================
+// ANALIZ
+// ============================================================
+function renderAnaliz(){
+  const total=S.logs.length;
+  const totalMin=S.logs.reduce((a,l)=>a+(l.sure||0),0);
+  const avgMood=total?( S.logs.reduce((a,l)=>a+parseInt(l.mood||3),0)/total ).toFixed(1);
+  const alanCounts={};
+  S.logs.forEach(l=>{alanCounts[l.alan]=(alanCounts[l.alan]||0)+(l.sure||0);});
+  const topAlan=Object.entries(alanCounts).sort((a,b)=>b[1]-a[1])[0];
+  const sad=document.getElementById('an-log'); if(sad) sad.textContent=total;
+  const sam=document.getElementById('an-sure'); if(sam) sam.textContent=totalMin;
+  const smood=document.getElementById('an-mood'); if(smood) smood.textContent=avgMood;
+  const salan=document.getElementById('an-alan'); if(salan) salan.textContent=topAlan?(ALAN_LABELS[topAlan[0]]||topAlan[0]):'-';
+  const ac=document.getElementById('alan-chart');
+  if(ac){
+    const maxMin=Math.max(...Object.values(alanCounts),1);
+    ac.innerHTML=Object.entries(alanCounts).map(([k,v])=>`
+      <div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:3px"><span>${ALAN_LABELS[k]||k}</span><span style="font-family:var(--mono)">${v} dk</span></div>
+      <div class="pt2"><div class="pf" style="width:${Math.round(v/maxMin*100)}%;background:var(--teal)"></div></div></div>`).join('') || '<div class="empty">Veri yok</div>';
+  }
+  const mh=document.getElementById('mood-hist');
+  if(mh) mh.innerHTML=S.logs.slice(0,14).reverse().map(l=>`<div title="${l.date}" style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--bg3);border:1px solid var(--border)">${MOOD_LABELS[l.mood]||'◈'}</div>`).join('');
+  const awc=document.getElementById('analiz-chart');
+  if(awc){
+    const days=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+    const max2=Math.max(...S.weekMins,60);
+    const colors=['var(--purple)','var(--teal)','var(--amber)','var(--coral)','var(--blue)','var(--green)','var(--purple)'];
+    awc.innerHTML=days.map((d,i)=>{
+      const h=Math.round((S.weekMins[i]/max2)*75)+3;
+      return `<div class="cbar"><div class="cb" style="height:${h}px;background:${colors[i]}" title="${S.weekMins[i]} dk"></div><div class="clbl">${d}</div></div>`;
+    }).join('');
+  }
+}
+
+function renderDashboard(){
+  renderDashTasks();
+  renderProgressBars();
+  renderWeekChart();
+  renderRecentLogs();
+  renderPostits();
+  updateStats();
+}
+
+function renderDashTasks(){
+  const todayKey=dateKey(today());
+  const data=S.dayData[todayKey]||{};
+  const tasks=data.tasks||[];
+  const el=document.getElementById('dash-tasks');
+  if(!el) return;
+  if(!tasks.length){el.innerHTML='<div class="empty">Takvimden bugün için görev ekle</div>';return;}
+  el.innerHTML=tasks.map((t,i)=>`<div class="ti${t.done?' done':''}" onclick="toggleDayTask('${todayKey}',${i});renderDashboard()">
+    <div class="tc">${t.done?'✓':''}</div>
+    <div class="tcont"><div class="tt">${t.text}<span class="tag tag-${t.tag||'u'}">${tagLabel(t.tag)}</span></div></div>
+  </div>`).join('');
+}
+
+function renderRecentLogs(){
+  const el=document.getElementById('recent-logs');
+  if(!el) return;
+  if(!S.logs.length){el.innerHTML='<div class="empty">Henüz log yok</div>';return;}
+  el.innerHTML=S.logs.slice(0,4).map(l=>`<div class="log-entry">
+    <div class="log-date">${l.date}</div>
+    <div class="log-cont"><div class="log-title">${MOOD_LABELS[l.mood]||''} ${l.baslik}</div><div class="log-note">${ALAN_LABELS[l.alan]||l.alan}</div></div>
+  </div>`).join('');
+}
+
+function renderProgressBars(){
+  const groups=[
+    {label:'Üniversite',ids:UNI_TOPICS.map(t=>t.id),color:'var(--purple)'},
+    {label:'Yazılım & AI',ids:YAZ_TOPICS.map(t=>t.id),color:'var(--teal)'},
+    {label:'Satış',ids:SATIS_TOPICS.map(t=>t.id),color:'var(--amber)'},
+    {label:'İçerik',ids:ICERIK_TOPICS.map(t=>t.id),color:'var(--coral)'},
+  ];
+  const c=document.getElementById('prog-bars');
+  if(!c) return;
+  c.innerHTML=groups.map(g=>{
+    const progs=g.ids.map(id=>(S.topicNotes[id]||{}).prog||0);
+    const avg=progs.length?Math.round(progs.reduce((a,b)=>a+b,0)/progs.length):0;
+    return `<div class="pi">
+      <div class="ph2"><span class="pn">${g.label}</span><span class="pp">${avg}%</span></div>
+      <div class="pt2"><div class="pf" style="width:${avg}%;background:${g.color}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderWeekChart(){
+  const days=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+  const max=Math.max(...S.weekMins,60);
+  const colors=['var(--purple)','var(--teal)','var(--amber)','var(--coral)','var(--blue)','var(--green)','var(--purple)'];
+  const el=document.getElementById('week-chart');
+  if(!el) return;
+  el.innerHTML=days.map((d,i)=>{
+    const h=Math.round((S.weekMins[i]/max)*75)+3;
+    return `<div class="cbar"><div class="cb" style="height:${h}px;background:${colors[i]}" title="${S.weekMins[i]} dk"></div><div class="clbl">${d}</div></div>`;
+  }).join('');
+}
+
+function updateStats(){
+  const todayKey=dateKey(today());
+  const data=S.dayData[todayKey]||{};
+  const done=(data.tasks||[]).filter(t=>t.done).length;
+  const el=document.getElementById('s-done'); if(el) el.textContent=done;
+  const total=S.weekMins.reduce((a,b)=>a+b,0);
+  const em=document.getElementById('s-min'); if(em) em.textContent=total;
+  const el2=document.getElementById('s-log'); if(el2) el2.textContent=S.logs.length;
+  const es=document.getElementById('s-streak'); if(es) es.textContent=S.streak;
+}
+
+function updateStreak(today2){
+  const t=today2||new Date().toDateString();
+  if(S.lastDate===t){}
+  else if(S.lastDate===new Date(Date.now()-86400000).toDateString()){S.streak++;}
+  else if(!S.lastDate){S.streak=1;}
+  else{S.streak=1;}
+  S.lastDate=t;
+  save('streak',S.streak); save('lastDate',S.lastDate);
+  const sd=document.getElementById('streak-disp');
+  if(sd) sd.textContent=`🔥 ${S.streak} günlük seri`;
+}
+
+function openModal(title,body){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=body;
+  document.getElementById('modal').style.display='flex';
+  setTimeout(()=>{const first=document.querySelector('#modal-body .inp');if(first)first.focus();},50);
+}
+function closeModal(){document.getElementById('modal').style.display='none';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const now=new Date();
+  const el=document.getElementById('date-disp');
+  if(el) el.textContent=fmtDate(now);
+  renderCal();
+  renderWeekView();
+  renderTopics('uni-topics',UNI_TOPICS);
+  renderTopics('yaz-topics',YAZ_TOPICS);
+  renderTopics('satis-topics',SATIS_TOPICS);
+  renderTopics('icerik-topics',ICERIK_TOPICS);
+  renderKaynaklar();
+  renderLogs();
+  loadNotes();
+  renderPostits();
+  renderDashboard();
+  updateStreak();
+});
+</script>
+</body>
+</html>
